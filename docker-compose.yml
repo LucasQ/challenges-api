@@ -1,0 +1,19 @@
+version: "3"
+
+services: 
+  app:
+    container_name: node-server
+    build: .
+    command: npm start
+    ports: 
+      - '9900:9900'
+    volumes:
+      - .:/app
+
+  db:
+    image: 'mongo'
+    container_name: db-server
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data/db:/data/db
