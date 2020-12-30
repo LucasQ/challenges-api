@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const users = User.find();
+        const users = await User.find();
         res.json(users);
     } catch (err) {
         res.json(err);

@@ -1,19 +1,33 @@
-version: "3"
+version: "3.2"
 
 services: 
-  app:
-    container_name: node-server
-    build: .
-    command: npm start
-    ports: 
-      - '9900:9900'
-    volumes:
-      - .:/app
-
   db:
-    image: 'mongo'
-    container_name: db-server
+    image: mongo
+    container_name: db
+    restart: always
     ports:
       - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+
+  api:
+    image: node:latest
+    container_name: api
+    restart: always
+    env_file:
+     - .env
+    depends_on:
+      - db
+    ports:
+      - '3001:9900'
     volumes:
-      - ./data/db:/data/db
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: npm start
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
