@@ -8,12 +8,14 @@ require('dotenv/config');
 const { DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME } = process.env
 
 const cuboRouter = require('./src/routes/cubo');
+const ifoodRouter = require('./src/routes/ifood');
 
 app.use(bodyParser.json());
 
 // Middlewares
 app.use(cors());
 app.use('/cubo', cuboRouter);
+app.use('/ifood', ifoodRouter);
 
 //Connect
 mongoose.connect(`mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`, {useNewUrlParser: true,  useNewUrlParser: true,  useUnifiedTopology: true }, (status) => {
